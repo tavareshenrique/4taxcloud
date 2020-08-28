@@ -25,3 +25,7 @@ export const Title = styled.h1`
   margin: 3rem 0 3rem;
   font-size: 1.5rem;
 `;
+
+export const TableContent = styled.div`
+  width: 100%;
+`;

@@ -1,26 +1,69 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Container, Title } from './styles';
+import useSWR from '~/hooks/useSWR';
 
-const Home: React.FC = () => (
-  <Container>
-    <Title>Tabelas e cálculos do IRRF</Title>
+import Table, { Td, Th, Tr } from '~/components/Table';
 
-    <p>
-      A tabela do IR é um dos principais instrumentos para auxiliar os
-      contribuentes na hora de enviar as informações fiscais para a Receita.
-      Afinal, é nesse documento que constam as alíquotas do Imposto de Renda.
-      <br />
-      <br />
-      Isso quer dizer que é essa a fonte para você saber qual é o percentual que
-      deve ser aplicado sobre os seus rendimentos. Portando, na hora de fazer o
-      cálculo e declarar seus rendimentos, ter essa tabela é fundamental para
-      que você não envie nenhum dado errado e, consequentemente, não caia na
-      malha fina.
-    </p>
+import { IEmployeesAPI } from './interfaces';
 
-    <Title>Seus Funcionários</Title>
-  </Container>
-);
+import { Container, Title, TableContent } from './styles';
+
+const Home: React.FC = () => {
+  const { data } = useSWR<IEmployeesAPI[]>({
+    url: 'funcionarios',
+  });
+
+  const tableColumns = useMemo(() => {
+    return (
+      <Tr>
+        <Th colSpan={6}>Nome</Th>
+        <Th>CPF</Th>
+        <Th>Salário</Th>
+        <Th>Desconto</Th>
+        <Th>Dependentes</Th>
+        <Th>Desconto IRPF</Th>
+      </Tr>
+    );
+  }, []);
+
+  const tableRows = useMemo(() => {
+    if (!data) return null;
+
+    return data.map(employee => (
+      <Tr key={employee.cpf}>
+        <Td colSpan={6}>{employee.nome}</Td>
+        <Td>{employee.cpf}</Td>
+        <Td>{employee.salario}</Td>
+        <Td>{employee.desconto}</Td>
+        <Td>{employee.dependentes}</Td>
+        <Td>50</Td>
+      </Tr>
+    ));
+  }, [data]);
+
+  return (
+    <Container>
+      <Title>Tabelas e cálculos do IRRF</Title>
+      <p>
+        A tabela do IR é um dos principais instrumentos para auxiliar os
+        contribuentes na hora de enviar as informações fiscais para a Receita.
+        Afinal, é nesse documento que constam as alíquotas do Imposto de Renda.
+        <br />
+        <br />
+        Isso quer dizer que é essa a fonte para você saber qual é o percentual
+        que deve ser aplicado sobre os seus rendimentos. Portando, na hora de
+        fazer o cálculo e declarar seus rendimentos, ter essa tabela é
+        fundamental para que você não envie nenhum dado errado e,
+        consequentemente, não caia na malha fina.
+      </p>
+
+      <Title>Seus Funcionários</Title>
+
+      <TableContent>
+        <Table columns={tableColumns} rows={tableRows} />
+      </TableContent>
+    </Container>
+  );
+};
 
 export default Home;
