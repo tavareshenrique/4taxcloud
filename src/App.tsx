@@ -1,11 +1,17 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-     <h1>4TAXCLOUD</h1>
-    </div>
-  );
-}
+import Routes from './routes';
+import Header from '~/components/Header';
+
+import GlobalStyle from './styles/global';
+
+const App: React.FC = () => (
+  <BrowserRouter>
+    <Header />
+    <Routes />
+    <GlobalStyle />
+  </BrowserRouter>
+);
 
 export default App;
