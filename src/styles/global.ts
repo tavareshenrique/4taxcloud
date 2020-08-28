@@ -1,6 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 import { shade } from 'polished';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import colors from './colors';
 
 export default createGlobalStyle`
