@@ -8,7 +8,7 @@ import { ITRProps } from './interfaces/styles';
 import colors from '~/styles/colors';
 
 export const Container = styled(ReactTable)`
-  height: 100px;
+  height: 6.25rem;
   justify-content: flex-start;
   flex: 1 1 auto;
   position: relative;
@@ -43,7 +43,7 @@ export const Th = styled.th`
 
 export const Td = styled.td`
   text-align: center;
-  height: 72px;
+  height: 4.5rem;
   vertical-align: middle !important;
   display: table-cell;
 `;
