@@ -1,9 +1,8 @@
 import { ButtonHTMLAttributes } from 'react';
 
-import { Tooltip, ButtonStyle } from '..';
+import { ButtonStyle } from '..';
 
 export type ButtonStyleProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonStyle?: ButtonStyle;
   loading?: number;
-  tooltip?: Tooltip;
 };
