@@ -1,39 +1,49 @@
 {
   "funcionarios": [
     {
+      "id": "aafbda48-4771-4424-ab58-09bb027ad1e3",
       "nome": "Letícia Aurora Farias",
       "cpf": "936.938.039-60",
       "salario": 998,
       "desconto": 74.85,
-      "dependentes": 2
+      "dependentes": 2,
+      "descontoIRPR": "ISENTO"
     },
     {
+      "id": "65237d07-1aaa-478f-98ca-170e773fd819",
       "nome": "Edson Thiago Drumond",
       "cpf": "748.517.476-24",
       "salario": 1045,
       "desconto": 78.38,
-      "dependentes": 1
+      "dependentes": 1,
+      "descontoIRPR": "ISENTO"
     },
     {
+      "id": "5ce23b2c-3374-4765-ac52-73d61ae11e75",
       "nome": "Fátima Elza Tereza Castro",
       "cpf": "701.118.872-08",
       "salario": 5500,
       "desconto": 628.95,
-      "dependentes": 0
+      "dependentes": 0,
+      "descontoIRPR": 391.09
     },
     {
+      "id": "fe4651a5-5417-4273-9817-747871bbc248",
       "nome": "Sandra Giovanna Drumond",
       "cpf": "715.890.756-25",
       "salario": 4522,
       "desconto": 492.03,
-      "dependentes": 3
+      "dependentes": 3,
+      "descontoIRPR": 154.49
     },
     {
+      "id": "47121d5d-a5c7-4aff-bd58-5fd98b59ce43",
       "nome": "Valentina Clara Nunes",
       "cpf": "101.151.404-41",
       "salario": 10000,
       "desconto": 713.1,
-      "dependentes": 4
+      "dependentes": 4,
+      "descontoIRPR": 1314.62
     }
   ]
 }
