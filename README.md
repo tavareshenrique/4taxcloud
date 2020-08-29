@@ -200,6 +200,6 @@ Released in 2020 :closed_book: License
 
 Made with love by [Henrique Tavares](https://github.com/tavareshenrique) 🚀.
 
-My thanks to [Elan Fraga](https://gist.github.com/elanfraga) for helping with the calculations and to [Seidor](https://www.seidor.com.br/content/seidor-latam-br/pt.html) for the challenge.
+My thanks to [Elan Fraga](https://github.com/elanfraga) for helping with the calculations and to [Seidor](https://www.seidor.com.br/content/seidor-latam-br/pt.html) for the challenge.
 
 This project is under the [MIT license](./LICENSE).

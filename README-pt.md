@@ -196,6 +196,6 @@ Clique em **Run all specs** para ver a mágica acontecer.
 
 # :closed_book: Licença
 
-Meus agradecimentos ao [Elan Fraga](https://gist.github.com/elanfraga) por me ajudar com os calculos matemáticos e a empresa [Seidor](https://www.seidor.com.br/content/seidor-latam-br/pt.html) pelo desafio.
+Meus agradecimentos ao [Elan Fraga](https://github.com/elanfraga) por me ajudar com os calculos matemáticos e a empresa [Seidor](https://www.seidor.com.br/content/seidor-latam-br/pt.html) pelo desafio.
 
 Esse projeto é possui [MIT license](./LICENSE).
