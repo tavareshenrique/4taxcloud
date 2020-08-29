@@ -39,11 +39,72 @@ export const Th = styled.th`
   background: ${colors.white};
   text-align: center;
   color: ${colors.primary};
+
+  @media only screen and (max-width: 735px) {
+    font-size: 1rem;
+  }
+
+  @media only screen and (max-width: 670px) {
+    font-size: 0.9rem;
+  }
+
+  @media only screen and (max-width: 570px) {
+    font-size: 0.8rem;
+  }
+
+  @media only screen and (max-width: 500px) {
+    font-size: 0.7rem;
+  }
+
+  /* @media only screen and (max-width: 415px) {
+    font-size: 0.6rem;
+  } */
+
+  @media only screen and (max-width: 420px) {
+    font-size: 0.5rem;
+  }
+
+  @media only screen and (max-width: 360px) {
+    font-size: 0.4rem;
+  }
+
+  @media only screen and (max-width: 320px) {
+    font-size: 0.3rem;
+  }
 `;
 
 export const Td = styled.td`
+  font-size: 1rem;
   text-align: center;
   height: 4.5rem;
   vertical-align: middle !important;
   display: table-cell;
+
+  @media only screen and (max-width: 735px) {
+    font-size: 0.9rem;
+  }
+
+  @media only screen and (max-width: 670px) {
+    font-size: 0.8rem;
+  }
+
+  @media only screen and (max-width: 570px) {
+    font-size: 0.7rem;
+  }
+
+  @media only screen and (max-width: 500px) {
+    font-size: 0.6rem;
+  }
+
+  @media only screen and (max-width: 420px) {
+    font-size: 0.4rem;
+  }
+
+  @media only screen and (max-width: 360px) {
+    font-size: 0.3rem;
+  }
+
+  @media only screen and (max-width: 320px) {
+    font-size: 0.2rem;
+  }
 `;

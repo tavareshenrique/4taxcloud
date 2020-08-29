@@ -17,6 +17,26 @@ export const IconContent = styled.div`
   img {
     width: 13rem;
   }
+
+  @media only screen and (max-width: 742px) {
+    img {
+      width: 10rem;
+      margin-right: 1rem;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    img {
+      width: 9rem;
+      margin-right: 1rem;
+    }
+  }
+
+  @media only screen and (max-width: 590px) {
+    img {
+      display: none;
+    }
+  }
 `;
 
 export const MenuContent = styled.nav`
@@ -41,6 +61,18 @@ export const MenuContent = styled.nav`
 
     &:hover {
       opacity: 0.6;
+    }
+  }
+
+  @media only screen and (max-width: 742px) {
+    a {
+      font-size: 1rem;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    a {
+      font-size: 0.9rem;
     }
   }
 `;

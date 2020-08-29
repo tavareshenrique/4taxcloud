@@ -5,29 +5,14 @@ import colors from '~/styles/colors';
 
 import { ISalaryFieldContent } from './interfaces/styles';
 
-export const Container = styled.div`
-  background: ${colors.white};
-
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  margin: 1rem 15rem;
-  align-self: center;
-
-  padding: 1rem 2rem;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  p {
-    font-size: 1rem;
-    margin-top: 0.3rem;
-  }
-`;
-
 export const Title = styled.h1`
   margin: 3rem 0 0;
   font-size: 1.5rem;
+`;
+
+export const Description = styled.p`
+  font-size: 1rem;
+  margin-top: 0.3rem;
 `;
 
 export const Content = styled.main`
