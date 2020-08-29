@@ -35,10 +35,8 @@
 
 * [Demo Website](#eyes-demo-website)
 * [Technologies](#computer-technologies)
-* [Features](#rocket-features)
 * [How to Run](#construction_worker-how-to-run)
-* [Found a bug? Missing a specific feature?](#bug-issues)
-* [Contributing](#tada-contributing)
+* [Author](#computer-author)
 * [License](#closed_book-license)
 
 <h2 align="left"> 📥 Layout at: </h2>
@@ -63,6 +61,7 @@
 
 You can acess the website at:
 👉  demo: <https://4taxcloud.henriquetavares.com/>
+
 🚨 **Remember: I'ts a only demo, don't have a API to save your data.**
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/97212814-6074-4f0f-853c-b30894ab0750/deploy-status)](https://app.netlify.com/sites/4taxcloud/deploys)
@@ -172,6 +171,26 @@ Click in **Run all specs**
 <div>
    <img src="src/assets/img/.github/cypress.png" width="400px">
 </div>
+
+# :computer: Author
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="http://github.com/tavareshenrique/">
+        <img src="https://avatars1.githubusercontent.com/u/27022914?v=4" width="100px;" alt="Henrique Tavares"/>
+        <br />
+        <sub>
+          <b>Henrique Tavares</b>
+        </sub>
+       </a>
+       <br />
+       <a href="https://www.linkedin.com/in/tavareshenrique/" title="Linkedin">@tavareshenrique</a>
+       <br />
+       <a href="https://github.com/tavareshenrique/4taxcloud/commits?author=tavareshenrique" title="Code">💻</a>
+    </td>
+  </tr>
+</table>
 
 # :closed_book: License
 
