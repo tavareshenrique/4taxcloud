@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "defaultCommandTimeout": 7000,
+  "viewportHeight": 900,
+  "viewportWidth": 1400,
+  "env": {
+    "name": "Henrique Tavares"
+  }
+}
