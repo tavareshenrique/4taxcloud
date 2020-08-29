@@ -1,13 +1,30 @@
-import React, { useRef, useState, useCallback, ChangeEvent } from 'react';
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  ChangeEvent,
+  useEffect,
+} from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
+import { FiUser, FiCreditCard, FiUsers } from 'react-icons/fi';
+import { uuid } from 'uuidv4';
+
+import api from '~/services/api';
+
+import useINSS from '~/hooks/useINSS';
+import useBaseSalary from '~/hooks/useBaseSalary';
+import useDiscountIRRF from '~/hooks/useDiscountIRRF';
 
 import Input from '~/components/Input';
 import InputMask from '~/components/Input/InputMask';
 import InputCurrency from '~/components/Input/InputCurrency';
 import Button from '~/components/Button';
 
+import { IEmployeeData } from './interfaces';
 import { FieldCurrencyType } from './types';
 
 import {
@@ -22,8 +39,18 @@ import {
 const Register: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
+  const history = useHistory();
+
+  const { aliquotINSS } = useINSS();
+  const { calculationBaseSalary } = useBaseSalary();
+  const { calculationDiscountIRRF } = useDiscountIRRF();
+
   const [salary, setSalary] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [dependents, setDependents] = useState(0);
+  const [cpf, setCPF] = useState('');
+  const [baseSalary, setBaseSalary] = useState(0);
+  const [discountIRRF, setDiscountIRRF] = useState<string | number>(0);
 
   const handleFormattingCurrencyValues = useCallback(
     (
@@ -44,18 +71,89 @@ const Register: React.FC = () => {
     [],
   );
 
+  const setDiscountAmount = useCallback(() => {
+    const aliquotINSSValue = aliquotINSS(salary);
+    setDiscount(aliquotINSSValue);
+  }, [aliquotINSS, salary]);
+
   const handleSubmit = useCallback(
-    (data: any) => {
-      const myData = {
+    (data: IEmployeeData) => {
+      const descontoIRPR =
+        discountIRRF !== 'ISENTO'
+          ? Number(discountIRRF).toFixed(2)
+          : discountIRRF;
+
+      const employeeData = {
         ...data,
+        id: uuid(),
         salario: salary,
         desconto: discount,
+        descontoIRPR,
       };
 
-      console.log(myData);
+      api.post('funcionarios', employeeData).then(() => {
+        alert('salvou');
+        history.push('/');
+      });
     },
-    [discount, salary],
+    [discount, discountIRRF, history, salary],
   );
+
+  const resetFields = useCallback(() => {
+    formRef.current?.clearField('nome');
+    setCPF('');
+    setSalary(0);
+    setDiscount(0);
+    setDependents(0);
+    setBaseSalary(0);
+    setDiscountIRRF(0);
+  }, []);
+
+  const handleCalculateSalaryAndDiscountValues = useCallback(() => {
+    const baseSalaryValue = calculationBaseSalary({
+      salary,
+      discount,
+      dependentsNumber: dependents,
+    });
+
+    const discountIRRFValue = calculationDiscountIRRF(baseSalaryValue);
+
+    setBaseSalary(baseSalaryValue);
+    setDiscountIRRF(discountIRRFValue);
+  }, [
+    calculationBaseSalary,
+    calculationDiscountIRRF,
+    dependents,
+    discount,
+    salary,
+  ]);
+
+  useEffect(() => {
+    handleCalculateSalaryAndDiscountValues();
+  }, [
+    calculationBaseSalary,
+    calculationDiscountIRRF,
+    dependents,
+    discount,
+    handleCalculateSalaryAndDiscountValues,
+    salary,
+  ]);
+
+  const baseSalaryCurrency = useMemo(() => {
+    return baseSalary.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }, [baseSalary]);
+
+  const discountIRRFCurrency = useMemo(() => {
+    if (discountIRRF === 'ISENTO') return discountIRRF;
+
+    return discountIRRF.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }, [discountIRRF]);
 
   return (
     <Container>
@@ -71,6 +169,7 @@ const Register: React.FC = () => {
                   name="nome"
                   label="Nome"
                   placeholder="Informe o nome do funcionário."
+                  icon={FiUser}
                 />
               </FieldContent>
             </Col>
@@ -82,6 +181,11 @@ const Register: React.FC = () => {
                   name="cpf"
                   label="CPF"
                   placeholder="Informe o CPF do funcionário."
+                  icon={FiCreditCard}
+                  value={cpf}
+                  onChange={event => {
+                    setCPF(event.target.value);
+                  }}
                 />
               </FieldContent>
             </Col>
@@ -98,6 +202,7 @@ const Register: React.FC = () => {
                   onChange={event => {
                     handleFormattingCurrencyValues(event, 'salary');
                   }}
+                  onBlur={setDiscountAmount}
                 />
               </FieldContent>
             </Col>
@@ -112,6 +217,7 @@ const Register: React.FC = () => {
                   onChange={event => {
                     handleFormattingCurrencyValues(event, 'discount');
                   }}
+                  onBlur={handleCalculateSalaryAndDiscountValues}
                 />
               </FieldContent>
             </Col>
@@ -123,6 +229,11 @@ const Register: React.FC = () => {
                   type="number"
                   label="Dependentes"
                   placeholder="Informe o número de dependentes."
+                  icon={FiUsers}
+                  value={dependents}
+                  onChange={event => {
+                    setDependents(Number(event.target.value));
+                  }}
                 />
               </FieldContent>
             </Col>
@@ -132,21 +243,25 @@ const Register: React.FC = () => {
             <Col>
               <SalaryFieldContent fieldType="salary">
                 <strong>Salário Base IR</strong>
-                <span>R$ 200,00</span>
+                <span>{baseSalaryCurrency}</span>
               </SalaryFieldContent>
             </Col>
 
             <Col>
               <SalaryFieldContent fieldType="discount">
                 <strong>Desconto IRRF</strong>
-                <span>R$ 200,00</span>
+                <span>{discountIRRFCurrency}</span>
               </SalaryFieldContent>
             </Col>
           </Row>
 
           <Footer>
-            <Button type="button" buttonStyle="outline">
-              Voltar
+            <Button
+              type="button"
+              buttonStyle="outline"
+              onClick={() => resetFields()}
+            >
+              Resetar
             </Button>
             <Button type="submit">Salvar</Button>
           </Footer>
