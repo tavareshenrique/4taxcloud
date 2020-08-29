@@ -18,7 +18,11 @@ const useINSS = (): IResponse => {
       return (salary * 12) / 100;
     }
 
-    return (salary * 14) / 100;
+    if (salary === 3_134.41 || salary <= 6_101.06) {
+      return (salary * 14) / 100;
+    }
+
+    return 0;
   }, []);
 
   return {
