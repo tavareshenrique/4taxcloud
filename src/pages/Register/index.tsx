@@ -12,6 +12,8 @@ import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import { FiUser, FiCreditCard, FiUsers } from 'react-icons/fi';
 import { uuid } from 'uuidv4';
+import { useToasts } from 'react-toast-notifications';
+import { cpf as cpfValidator } from 'cpf-cnpj-validator';
 
 import api from '~/services/api';
 
@@ -40,6 +42,8 @@ const Register: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const history = useHistory();
+
+  const { addToast } = useToasts();
 
   const { aliquotINSS } = useINSS();
   const { calculationBaseSalary } = useBaseSalary();
@@ -76,29 +80,6 @@ const Register: React.FC = () => {
     setDiscount(aliquotINSSValue);
   }, [aliquotINSS, salary]);
 
-  const handleSubmit = useCallback(
-    (data: IEmployeeData) => {
-      const descontoIRPR =
-        discountIRRF !== 'ISENTO'
-          ? Number(discountIRRF).toFixed(2)
-          : discountIRRF;
-
-      const employeeData = {
-        ...data,
-        id: uuid(),
-        salario: salary,
-        desconto: discount,
-        descontoIRPR,
-      };
-
-      api.post('funcionarios', employeeData).then(() => {
-        alert('salvou');
-        history.push('/');
-      });
-    },
-    [discount, discountIRRF, history, salary],
-  );
-
   const resetFields = useCallback(() => {
     formRef.current?.clearField('nome');
     setCPF('');
@@ -127,6 +108,74 @@ const Register: React.FC = () => {
     discount,
     salary,
   ]);
+
+  const fieldsValidation = useCallback((data: IEmployeeData) => {
+    const cpfIsValid = cpfValidator.isValid(data.cpf.trim().normalize());
+
+    const isValid =
+      data.nome.trim().normalize() !== '' &&
+      data.cpf.trim().normalize() !== '' &&
+      data.salario !== 0 &&
+      cpfIsValid;
+
+    if (data.nome.trim().normalize() === '') {
+      formRef.current?.setFieldError('nome', 'Nome é obrigatório.');
+    }
+
+    if (data.cpf.trim().normalize() === '') {
+      formRef.current?.setFieldError('cpf', 'CPF é obrigatório.');
+    } else if (!cpfIsValid) {
+      formRef.current?.setFieldError('cpf', 'CPF informado é inválido.');
+    }
+
+    if (data.salario === 0) {
+      formRef.current?.setFieldError('salario', 'Salário é obrigatório.');
+    }
+
+    return isValid;
+  }, []);
+
+  const handleSubmit = useCallback(
+    async (data: IEmployeeData) => {
+      const descontoIRPR =
+        discountIRRF !== 'ISENTO'
+          ? Number(discountIRRF).toFixed(2)
+          : discountIRRF;
+
+      const employeeData = {
+        ...data,
+        id: uuid(),
+        salario: salary,
+        desconto: discount,
+        descontoIRPR,
+      };
+
+      if (!fieldsValidation(employeeData)) return;
+
+      api
+        .post('funcionarios', employeeData)
+        .then(() => {
+          addToast(
+            `O funcionário ${employeeData.nome} foi salvo com sucesso!`,
+            {
+              appearance: 'success',
+              autoDismiss: true,
+            },
+          );
+          history.push('/');
+        })
+        .catch(() => {
+          addToast(
+            `Houve um problema ao salvar esse funcionário, tente novamente, por favor!`,
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            },
+          );
+        });
+    },
+    [addToast, discount, discountIRRF, fieldsValidation, history, salary],
+  );
 
   useEffect(() => {
     handleCalculateSalaryAndDiscountValues();

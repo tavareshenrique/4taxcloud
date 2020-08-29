@@ -4,5 +4,6 @@ export interface IEmployeeData {
   cpf: string;
   salario: number;
   desconto: number;
-  dependentes: number | string;
+  dependentes: number;
+  descontoIRPR: number | string;
 }
