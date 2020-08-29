@@ -23,17 +23,19 @@ import useINSS from '~/hooks/useINSS';
 import useBaseSalary from '~/hooks/useBaseSalary';
 import useDiscountIRRF from '~/hooks/useDiscountIRRF';
 
+import BoxContent from '~/components/BoxContent';
 import Input from '~/components/Input';
 import InputMask from '~/components/Input/InputMask';
 import InputCurrency from '~/components/Input/InputCurrency';
 import Button from '~/components/Button';
+import LoadingOverlay from '~/components/LoadingOverlay';
 
 import { IEmployeeData, IEmployeeDataLocation } from './interfaces';
 import { FieldCurrencyType } from './types';
 
 import {
-  Container,
   Title,
+  Description,
   Content,
   FieldContent,
   SalaryFieldContent,
@@ -64,6 +66,7 @@ const Register: React.FC = () => {
   const [cpf, setCPF] = useState('');
   const [baseSalary, setBaseSalary] = useState(0);
   const [discountIRRF, setDiscountIRRF] = useState<string | number>(0);
+  const [loading, setLoading] = useState(false);
 
   const handleFormattingCurrencyValues = useCallback(
     (
@@ -183,6 +186,8 @@ const Register: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: IEmployeeData) => {
+      setLoading(true);
+
       const descontoIRPR =
         discountIRRF !== 'ISENTO'
           ? Number(discountIRRF).toFixed(2)
@@ -196,7 +201,43 @@ const Register: React.FC = () => {
         descontoIRPR,
       };
 
-      if (!fieldsValidation(employeeData)) return;
+      if (!fieldsValidation(employeeData)) {
+        setLoading(false);
+        return;
+      }
+
+      if (locationData) {
+        const employeeDataUpdate = {
+          ...data,
+          id: locationData.id,
+          salario: salary,
+          desconto: discount,
+          descontoIRPR,
+        };
+
+        api
+          .put(`funcionarios/${locationData.id}`, employeeDataUpdate)
+          .then(() => {
+            addToast('O funcionário foi alterado com sucesso!', {
+              appearance: 'success',
+              autoDismiss: true,
+            });
+            history.push('/');
+          })
+          .catch(() => {
+            addToast(
+              `Houve um problema ao alterar esse funcionário, tente novamente, por favor!`,
+              {
+                appearance: 'error',
+                autoDismiss: true,
+              },
+            );
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+        return;
+      }
 
       api
         .post('funcionarios', employeeData)
@@ -218,9 +259,20 @@ const Register: React.FC = () => {
               autoDismiss: true,
             },
           );
+        })
+        .finally(() => {
+          setLoading(false);
         });
     },
-    [addToast, discount, discountIRRF, fieldsValidation, history, salary],
+    [
+      addToast,
+      discount,
+      discountIRRF,
+      fieldsValidation,
+      history,
+      locationData,
+      salary,
+    ],
   );
 
   useEffect(() => {
@@ -243,7 +295,6 @@ const Register: React.FC = () => {
       setDependents(Number(locationData.dependentes));
       setSalary(locationData.salario);
       setDiscount(locationData.desconto);
-      // handleCalculateSalaryAndDiscountValues();
     }
   }, [locationData]);
 
@@ -264,9 +315,11 @@ const Register: React.FC = () => {
   }, [discountIRRF]);
 
   return (
-    <Container>
+    <BoxContent>
+      {loading && <LoadingOverlay />}
+
       <Title>{title}</Title>
-      <p>{description}</p>
+      <Description>{description}</Description>
 
       <Content>
         <Form ref={formRef} onSubmit={handleSubmit} initialData={locationData}>
@@ -375,7 +428,7 @@ const Register: React.FC = () => {
           </Footer>
         </Form>
       </Content>
-    </Container>
+    </BoxContent>
   );
 };
 
