@@ -30,13 +30,13 @@ const Home: React.FC = () => {
     if (!data) return null;
 
     return data.map(employee => (
-      <Tr key={employee.cpf}>
+      <Tr key={employee.id}>
         <Td colSpan={6}>{employee.nome}</Td>
         <Td>{employee.cpf}</Td>
         <Td>{employee.salario}</Td>
         <Td>{employee.desconto}</Td>
         <Td>{employee.dependentes}</Td>
-        <Td>50</Td>
+        <Td>{employee.descontoIRPR}</Td>
       </Tr>
     ));
   }, [data]);
