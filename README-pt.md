@@ -64,7 +64,7 @@ Você pode acessar o projeto por aqui:
 
 🚨 **Mas Lembre-se: É apenas uma Demo, você não vai conseguir salvar seus dados, pois não tem uma API executando por trás.**
 
-🤩 **Maaaaaaas, você pode fazer funcionar, você só precisa iniciar o server na sua localhost e pronto. Como você faz isso? Apenas siga os passos abaixo de "Como Executar".**
+🤩 **Maaaaaaas, você pode fazer funcionar, você só precisa iniciar o server na sua localhost e pronto. Como você faz isso? Apenas siga os passos abaixo de [Como Executar](#construction_worker-como-executar).**
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/97212814-6074-4f0f-853c-b30894ab0750/deploy-status)](https://app.netlify.com/sites/4taxcloud/deploys)
 

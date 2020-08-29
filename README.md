@@ -64,7 +64,7 @@ You can acess the website at:
 
 🚨 **Remember: I'ts a only demo, don't have a API to save your data.**
 
-🤩 **Buuuuut, you can make it work, if you put the servers to run on your localhost. How do you do that? Just follow the steps below in "How to run".**
+🤩 **Buuuuut, you can make it work, if you put the servers to run on your localhost. How do you do that? Just follow the steps below in [How to Run](#construction_worker-how-to-run).**
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/97212814-6074-4f0f-853c-b30894ab0750/deploy-status)](https://app.netlify.com/sites/4taxcloud/deploys)
 
