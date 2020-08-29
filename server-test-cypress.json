@@ -1,0 +1,40 @@
+{
+  "funcionarios": [
+    {
+      "nome": "Lila Lemke",
+      "cpf": "263.855.100-77",
+      "salario": 200,
+      "desconto": 15,
+      "dependentes": "01",
+      "id": "448004eb-d227-48bc-8cd4-1ee65f7eaa08",
+      "descontoIRPR": "ISENTO"
+    },
+    {
+      "nome": "Armando Beatty",
+      "cpf": "263.855.100-77",
+      "salario": 200,
+      "desconto": 15,
+      "dependentes": "01",
+      "id": "28da8dc3-056b-4f9c-ba7c-84c85233ad28",
+      "descontoIRPR": "ISENTO"
+    },
+    {
+      "nome": "Lynne Greenholt",
+      "cpf": "263.855.100-77",
+      "salario": 200,
+      "desconto": 15,
+      "dependentes": "01",
+      "id": "1d2d3823-3190-47ac-a134-5451cb4e555e",
+      "descontoIRPR": "ISENTO"
+    },
+    {
+      "nome": "Nick Gislason",
+      "cpf": "263.855.100-77",
+      "salario": 200,
+      "desconto": 15,
+      "dependentes": "01",
+      "id": "d012e38c-6080-45f0-a005-47062d4ccab9",
+      "descontoIRPR": "ISENTO"
+    }
+  ]
+}
