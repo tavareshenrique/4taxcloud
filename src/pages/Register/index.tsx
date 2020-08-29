@@ -241,6 +241,9 @@ const Register: React.FC = () => {
       setSecondaryButton('Excluir');
       setCPF(locationData.cpf);
       setDependents(Number(locationData.dependentes));
+      setSalary(locationData.salario);
+      setDiscount(locationData.desconto);
+      // handleCalculateSalaryAndDiscountValues();
     }
   }, [locationData]);
 
