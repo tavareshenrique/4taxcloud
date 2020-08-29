@@ -16,7 +16,7 @@ const Header: React.FC = () => {
         <NavLink activeClassName="selected" to="/" exact>
           Tabelas e cálculos do IRFF
         </NavLink>
-        <NavLink activeClassName="selected" to="/register">
+        <NavLink activeClassName="selected" to="/employee">
           Registrar Funcionário
         </NavLink>
       </MenuContent>

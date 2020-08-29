@@ -19,7 +19,7 @@ const Home: React.FC = () => {
 
   const handleUpdateData = useCallback(
     (updateData: IEmployeesAPI) => {
-      history.push(`register/${updateData.id}`, {
+      history.push(`employee/${updateData.id}`, {
         data: updateData,
       });
     },
