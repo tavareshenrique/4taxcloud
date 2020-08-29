@@ -67,21 +67,22 @@ const InputCurrency: React.FC<IInputProps> = ({
         style={containerStyle}
         isErrored={!!error}
         isFocused={isFocused}
-        data-testid="z-input-container"
+        data-testid="input-currency-container"
       >
-        {Icon && <Icon size={20} data-testid="z-input-icon" />}
+        {Icon && <Icon size={20} data-testid="input-currency-icon" />}
         <IntlCurrencyInput
           name={name}
           currency="BRL"
           config={currencyConfig}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
-          defaultValue={defaultValue}
+          defaultValue={Number(defaultValue)}
+          data-testid="input-currency"
           {...rest}
         />
 
         {error && (
-          <Error title={error} data-testid="z-input-error">
+          <Error title={error} data-testid="input-currency-error">
             <FiAlertCircle color={colors.error} size={20} />
           </Error>
         )}

@@ -7,7 +7,7 @@ import { Container, IconContent, MenuContent } from './styles';
 
 const Header: React.FC = () => {
   return (
-    <Container>
+    <Container data-testid="header">
       <IconContent>
         <img src={Logo} alt="Logo da Seidor" />
       </IconContent>
