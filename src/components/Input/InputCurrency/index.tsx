@@ -77,7 +77,6 @@ const InputCurrency: React.FC<IInputProps> = ({
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           defaultValue={defaultValue}
-          ref={inputRef}
           {...rest}
         />
 
