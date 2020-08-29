@@ -6,7 +6,7 @@ import { Container, Tr, Th, Td } from './styles';
 
 const Table: React.FC<ITableProps> = ({ columns, rows }) => {
   return (
-    <Container striped bordered hover>
+    <Container data-cy="table" striped bordered hover>
       <thead>{columns}</thead>
       <tbody>{rows}</tbody>
     </Container>
