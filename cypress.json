@@ -4,6 +4,9 @@
   "viewportHeight": 900,
   "viewportWidth": 1400,
   "env": {
-    "name": "Henrique Tavares"
+    "cpf": "26385510077",
+    "cpfFormatted": "263.855.100-77",
+    "salary": "20000",
+    "dependents": 1
   }
 }
