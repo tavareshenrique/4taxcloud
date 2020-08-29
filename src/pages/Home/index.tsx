@@ -34,7 +34,7 @@ const Home: React.FC = () => {
         <Th>Salário</Th>
         <Th>Desconto</Th>
         <Th>Dependentes</Th>
-        <Th>Desconto IRPF</Th>
+        <Th>Desconto IRRF</Th>
       </Tr>
     );
   }, []);

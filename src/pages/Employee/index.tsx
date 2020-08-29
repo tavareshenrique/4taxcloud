@@ -352,7 +352,7 @@ const Employee: React.FC = () => {
             </Col>
           </Row>
 
-          <Row xs={1} md={3}>
+          <Row>
             <Col>
               <FieldContent>
                 <InputCurrency
