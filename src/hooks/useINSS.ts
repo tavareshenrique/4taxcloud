@@ -22,7 +22,7 @@ const useINSS = (): IResponse => {
       return (salary * 14) / 100;
     }
 
-    return 0;
+    return 854.15;
   }, []);
 
   return {
