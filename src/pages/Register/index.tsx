@@ -8,12 +8,14 @@ import React, {
 } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import { FiUser, FiCreditCard, FiUsers } from 'react-icons/fi';
 import { uuid } from 'uuidv4';
 import { useToasts } from 'react-toast-notifications';
 import { cpf as cpfValidator } from 'cpf-cnpj-validator';
+
+import Swal from 'sweetalert2';
 
 import api from '~/services/api';
 
@@ -26,7 +28,7 @@ import InputMask from '~/components/Input/InputMask';
 import InputCurrency from '~/components/Input/InputCurrency';
 import Button from '~/components/Button';
 
-import { IEmployeeData } from './interfaces';
+import { IEmployeeData, IEmployeeDataLocation } from './interfaces';
 import { FieldCurrencyType } from './types';
 
 import {
@@ -42,6 +44,8 @@ const Register: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const history = useHistory();
+  const location = useLocation<IEmployeeDataLocation>();
+  const locationData = location?.state?.data;
 
   const { addToast } = useToasts();
 
@@ -49,6 +53,11 @@ const Register: React.FC = () => {
   const { calculationBaseSalary } = useBaseSalary();
   const { calculationDiscountIRRF } = useDiscountIRRF();
 
+  const [title, setTitle] = useState('Cadastro de Funcionário');
+  const [description, setDescription] = useState(
+    'Informe os dados do funcionário',
+  );
+  const [secondaryButton, setSecondaryButton] = useState('Resetar');
   const [salary, setSalary] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [dependents, setDependents] = useState(0);
@@ -75,21 +84,6 @@ const Register: React.FC = () => {
     [],
   );
 
-  const setDiscountAmount = useCallback(() => {
-    const aliquotINSSValue = aliquotINSS(salary);
-    setDiscount(aliquotINSSValue);
-  }, [aliquotINSS, salary]);
-
-  const resetFields = useCallback(() => {
-    formRef.current?.clearField('nome');
-    setCPF('');
-    setSalary(0);
-    setDiscount(0);
-    setDependents(0);
-    setBaseSalary(0);
-    setDiscountIRRF(0);
-  }, []);
-
   const handleCalculateSalaryAndDiscountValues = useCallback(() => {
     const baseSalaryValue = calculationBaseSalary({
       salary,
@@ -108,6 +102,58 @@ const Register: React.FC = () => {
     discount,
     salary,
   ]);
+
+  const setDiscountAmount = useCallback(() => {
+    const aliquotINSSValue = aliquotINSS(salary);
+    setDiscount(aliquotINSSValue);
+  }, [aliquotINSS, salary]);
+
+  const handleSecondaryButton = useCallback(async () => {
+    if (!locationData) {
+      formRef.current?.clearField('nome');
+      setCPF('');
+      setSalary(0);
+      setDiscount(0);
+      setDependents(0);
+      setBaseSalary(0);
+      setDiscountIRRF(0);
+
+      return;
+    }
+
+    const locationDataName = locationData.nome;
+
+    Swal.fire({
+      title: 'Você tem certeza?',
+      text: 'Não será possível recuperar esse funcionário depois de excluido.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, deleta!',
+      cancelButtonText: 'Não, vou pensar um pouco',
+    }).then(result => {
+      if (result.value) {
+        api
+          .delete(`funcionarios/${locationData.id}`)
+          .then(() => {
+            Swal.fire(
+              'Deletado!',
+              `Diga adeus para o ${locationDataName}! 😭`,
+              'success',
+            );
+            history.push('/');
+          })
+          .catch(() => {
+            addToast(
+              `Houve um problema ao excluir esse funcionário, tente novamente, por favor!`,
+              {
+                appearance: 'error',
+                autoDismiss: true,
+              },
+            );
+          });
+      }
+    });
+  }, [addToast, history, locationData]);
 
   const fieldsValidation = useCallback((data: IEmployeeData) => {
     const cpfIsValid = cpfValidator.isValid(data.cpf.trim().normalize());
@@ -188,6 +234,16 @@ const Register: React.FC = () => {
     salary,
   ]);
 
+  useEffect(() => {
+    if (locationData) {
+      setTitle('Alteração de Funcionário');
+      setDescription('Altere os dados do funcionário.');
+      setSecondaryButton('Excluir');
+      setCPF(locationData.cpf);
+      setDependents(Number(locationData.dependentes));
+    }
+  }, [locationData]);
+
   const baseSalaryCurrency = useMemo(() => {
     return baseSalary.toLocaleString('pt-br', {
       style: 'currency',
@@ -206,11 +262,11 @@ const Register: React.FC = () => {
 
   return (
     <Container>
-      <Title>Cadastro de Funcionário</Title>
-      <p>Informe os dados do funcionário</p>
+      <Title>{title}</Title>
+      <p>{description}</p>
 
       <Content>
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit} initialData={locationData}>
           <Row xs={1} md={2}>
             <Col>
               <FieldContent>
@@ -308,9 +364,9 @@ const Register: React.FC = () => {
             <Button
               type="button"
               buttonStyle="outline"
-              onClick={() => resetFields()}
+              onClick={() => handleSecondaryButton()}
             >
-              Resetar
+              {secondaryButton}
             </Button>
             <Button type="submit">Salvar</Button>
           </Footer>
