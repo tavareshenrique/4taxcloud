@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import useSWR from '~/hooks/useSWR';
 
@@ -9,9 +10,20 @@ import { IEmployeesAPI } from './interfaces';
 import { Container, Title, TableContent } from './styles';
 
 const Home: React.FC = () => {
+  const history = useHistory();
+
   const { data } = useSWR<IEmployeesAPI[]>({
     url: 'funcionarios',
   });
+
+  const handleUpdateData = useCallback(
+    (updateData: IEmployeesAPI) => {
+      history.push(`register/${updateData.id}`, {
+        data: updateData,
+      });
+    },
+    [history],
+  );
 
   const tableColumns = useMemo(() => {
     return (
@@ -30,7 +42,7 @@ const Home: React.FC = () => {
     if (!data) return null;
 
     return data.map(employee => (
-      <Tr key={employee.id}>
+      <Tr key={employee.id} onClick={() => handleUpdateData(employee)}>
         <Td colSpan={6}>{employee.nome}</Td>
         <Td>{employee.cpf}</Td>
         <Td>{employee.salario}</Td>
@@ -39,7 +51,7 @@ const Home: React.FC = () => {
         <Td>{employee.descontoIRPR}</Td>
       </Tr>
     ));
-  }, [data]);
+  }, [data, handleUpdateData]);
 
   return (
     <Container>
