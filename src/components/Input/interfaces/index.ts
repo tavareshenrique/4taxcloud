@@ -7,4 +7,5 @@ export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerStyle?: Record<string, unknown>;
   icon?: React.ComponentType<IconBaseProps>;
+  onBlur?: () => void;
 }

@@ -29,6 +29,7 @@ const InputCurrency: React.FC<IInputProps> = ({
   label,
   containerStyle,
   icon: Icon,
+  onBlur,
   ...rest
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +43,9 @@ const InputCurrency: React.FC<IInputProps> = ({
 
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
-  }, []);
+
+    if (onBlur) onBlur();
+  }, [onBlur]);
 
   useEffect(() => {
     registerField({
