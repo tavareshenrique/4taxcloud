@@ -1,22 +1,8 @@
 import styled from 'styled-components';
 
-import { IContainerProps } from './interfaces/styles';
-import { TooltipTypes } from './types';
-
 import colors from '~/styles/colors';
 
-const handleTypeColor = (typeColor: TooltipTypes | undefined): string => {
-  switch (typeColor) {
-    case 'error':
-      return colors.red;
-    case 'alert':
-      return colors.orange;
-    default:
-      return colors.blue;
-  }
-};
-
-export const Container = styled.div<IContainerProps>`
+export const Container = styled.div`
   position: relative;
 
   z-index: 1;
@@ -28,7 +14,7 @@ export const Container = styled.div<IContainerProps>`
 
   span {
     width: 160px;
-    background: ${({ type }) => handleTypeColor(type)};
+    background: ${colors.red};
     padding: 8px;
     border-radius: 4px;
     font-size: 14px;
@@ -47,7 +33,7 @@ export const Container = styled.div<IContainerProps>`
     &::before {
       content: '';
       border-style: solid;
-      border-color: ${({ type }) => handleTypeColor(type)} transparent;
+      border-color: ${colors.red} transparent;
       border-width: 6px 6px 0 6px;
       top: 100%;
       position: absolute;

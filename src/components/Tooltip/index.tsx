@@ -7,11 +7,10 @@ import { Container } from './styles';
 const Tooltip: React.FC<ITooltipProps> = ({
   title,
   className = '',
-  type = 'information',
   children,
 }) => {
   return (
-    <Container className={className} type={type}>
+    <Container className={className}>
       {children}
       <span>{title}</span>
     </Container>
