@@ -42,7 +42,7 @@ import {
   Footer,
 } from './styles';
 
-const Register: React.FC = () => {
+const Employee: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const history = useHistory();
@@ -432,4 +432,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default Employee;
