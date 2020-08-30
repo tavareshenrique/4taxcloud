@@ -6,6 +6,7 @@ import React, {
   ChangeEvent,
   useEffect,
 } from 'react';
+import { useDispatch } from 'react-redux';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -16,8 +17,6 @@ import { useToasts } from 'react-toast-notifications';
 import { cpf as cpfValidator } from 'cpf-cnpj-validator';
 
 import Swal from 'sweetalert2';
-
-import api from '~/services/api';
 
 import useINSS from '~/hooks/useINSS';
 import useBaseSalary from '~/hooks/useBaseSalary';
@@ -30,7 +29,14 @@ import InputCurrency from '~/components/Input/InputCurrency';
 import Button from '~/components/Button';
 import LoadingOverlay from '~/components/LoadingOverlay';
 
-import { IEmployeeData, IEmployeeDataLocation } from './interfaces';
+import {
+  addEmployee,
+  updateEmployee,
+  removeEmployee,
+} from '~/store/modules/employee/actions';
+import { IEmployeeData } from '~/store/modules/employee/interfaces';
+
+import { IEmployeeDataLocation } from './interfaces';
 import { FieldCurrencyType } from './types';
 
 import {
@@ -44,6 +50,8 @@ import {
 
 const Employee: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+
+  const dispatch = useDispatch();
 
   const history = useHistory();
   const location = useLocation<IEmployeeDataLocation>();
@@ -135,28 +143,26 @@ const Employee: React.FC = () => {
       cancelButtonText: 'Não, vou pensar um pouco',
     }).then(result => {
       if (result.value) {
-        api
-          .delete(`funcionarios/${locationData.id}`)
-          .then(() => {
-            Swal.fire(
-              'Deletado!',
-              `Diga adeus para o ${locationDataName}! 😭`,
-              'success',
-            );
-            history.push('/');
-          })
-          .catch(() => {
-            addToast(
-              `Houve um problema ao excluir esse funcionário, tente novamente, por favor!`,
-              {
-                appearance: 'error',
-                autoDismiss: true,
-              },
-            );
-          });
+        try {
+          dispatch(removeEmployee(locationData.id));
+          Swal.fire(
+            'Deletado!',
+            `Diga adeus para o ${locationDataName}! 😭`,
+            'success',
+          );
+          history.push('/');
+        } catch {
+          addToast(
+            `Houve um problema para deletar esse funcionario, tente novamente!`,
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            },
+          );
+        }
       }
     });
-  }, [addToast, history, locationData]);
+  }, [addToast, dispatch, history, locationData]);
 
   const fieldsValidation = useCallback((data: IEmployeeData) => {
     const cpfIsValid = cpfValidator.isValid(data.cpf.trim().normalize());
@@ -206,68 +212,50 @@ const Employee: React.FC = () => {
         return;
       }
 
-      if (locationData) {
-        const employeeDataUpdate = {
-          ...data,
-          id: locationData.id,
-          salario: salary,
-          desconto: discount,
-          descontoIRPR,
-        };
+      try {
+        if (locationData) {
+          const employeeDataUpdate = {
+            ...data,
+            id: locationData.id,
+            salario: salary,
+            desconto: discount,
+            descontoIRPR,
+          };
 
-        api
-          .put(`funcionarios/${locationData.id}`, employeeDataUpdate)
-          .then(() => {
-            addToast('O funcionário foi alterado com sucesso!', {
-              appearance: 'success',
-              autoDismiss: true,
-            });
-            history.push('/');
-          })
-          .catch(() => {
-            addToast(
-              `Houve um problema ao alterar esse funcionário, tente novamente, por favor!`,
-              {
-                appearance: 'error',
-                autoDismiss: true,
-              },
-            );
-          })
-          .finally(() => {
-            setLoading(false);
+          dispatch(updateEmployee(employeeDataUpdate));
+
+          addToast(`O funcionário foi alterado com sucesso!`, {
+            appearance: 'success',
+            autoDismiss: true,
           });
-        return;
-      }
 
-      api
-        .post('funcionarios', employeeData)
-        .then(() => {
-          addToast(
-            `O funcionário ${employeeData.nome} foi salvo com sucesso!`,
-            {
-              appearance: 'success',
-              autoDismiss: true,
-            },
-          );
           history.push('/');
-        })
-        .catch(() => {
-          addToast(
-            `Houve um problema ao salvar esse funcionário, tente novamente, por favor!`,
-            {
-              appearance: 'error',
-              autoDismiss: true,
-            },
-          );
-        })
-        .finally(() => {
-          setLoading(false);
+
+          return;
+        }
+
+        dispatch(addEmployee(employeeData));
+
+        addToast(`O funcionário ${employeeData.nome} foi salvo com sucesso!`, {
+          appearance: 'success',
+          autoDismiss: true,
         });
+
+        history.push('/');
+      } catch {
+        addToast(`Houve um problema com essa ação, tente novamente!`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      } finally {
+        setLoading(false);
+      }
     },
     [
       addToast,
       discount,
       discountIRRF,
+      dispatch,
       fieldsValidation,
       history,
       locationData,

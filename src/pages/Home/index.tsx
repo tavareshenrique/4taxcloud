@@ -1,10 +1,14 @@
 import React, { useMemo, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import useSWR from '~/hooks/useSWR';
+// import useSWR from '~/hooks/useSWR';
 
 import Table, { Td, Th, Tr } from '~/components/Table';
 import BoxContent from '~/components/BoxContent';
+
+import { IState } from '~/store';
+import { IEmployeeData } from '~/store/modules/employee/interfaces';
 
 import { IEmployeesAPI } from './interfaces';
 
@@ -13,9 +17,13 @@ import { Title, Description, TableContent } from './styles';
 const Home: React.FC = () => {
   const history = useHistory();
 
-  const { data } = useSWR<IEmployeesAPI[]>({
-    url: 'funcionarios',
-  });
+  const employees = useSelector<IState, IEmployeeData[]>(
+    state => state.employee.employees,
+  );
+
+  // const { data } = useSWR<IEmployeesAPI[]>({
+  //   url: 'funcionarios',
+  // });
 
   const handleUpdateData = useCallback(
     (updateData: IEmployeesAPI) => {
@@ -40,9 +48,7 @@ const Home: React.FC = () => {
   }, []);
 
   const tableRows = useMemo(() => {
-    if (!data) return null;
-
-    return data.map(employee => (
+    return employees.map(employee => (
       <Tr key={employee.id} onClick={() => handleUpdateData(employee)}>
         <Td colSpan={6}>{employee.nome}</Td>
         <Td>{employee.cpf}</Td>
@@ -52,7 +58,7 @@ const Home: React.FC = () => {
         <Td>{employee.descontoIRPR}</Td>
       </Tr>
     ));
-  }, [data, handleUpdateData]);
+  }, [employees, handleUpdateData]);
 
   return (
     <BoxContent>
