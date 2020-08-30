@@ -315,120 +315,126 @@ const Employee: React.FC = () => {
   }, [discountIRRF]);
 
   return (
-    <BoxContent>
+    <>
       {loading && <LoadingOverlay />}
 
-      <Title>{title}</Title>
-      <Description>{description}</Description>
+      <BoxContent>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
 
-      <Content>
-        <Form ref={formRef} onSubmit={handleSubmit} initialData={locationData}>
-          <Row xs={1} md={2}>
-            <Col>
-              <FieldContent>
-                <Input
-                  name="nome"
-                  label="Nome"
-                  placeholder="Informe o nome do funcionário."
-                  icon={FiUser}
-                />
-              </FieldContent>
-            </Col>
+        <Content>
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            initialData={locationData}
+          >
+            <Row xs={1} md={2}>
+              <Col>
+                <FieldContent>
+                  <Input
+                    name="nome"
+                    label="Nome"
+                    placeholder="Informe o nome do funcionário."
+                    icon={FiUser}
+                  />
+                </FieldContent>
+              </Col>
 
-            <Col>
-              <FieldContent>
-                <InputMask
-                  mask="999.999.999-99"
-                  name="cpf"
-                  label="CPF"
-                  placeholder="Informe o CPF do funcionário."
-                  icon={FiCreditCard}
-                  value={cpf}
-                  onChange={event => {
-                    setCPF(event.target.value);
-                  }}
-                />
-              </FieldContent>
-            </Col>
-          </Row>
+              <Col>
+                <FieldContent>
+                  <InputMask
+                    mask="999.999.999-99"
+                    name="cpf"
+                    label="CPF"
+                    placeholder="Informe o CPF do funcionário."
+                    icon={FiCreditCard}
+                    value={cpf}
+                    onChange={event => {
+                      setCPF(event.target.value);
+                    }}
+                  />
+                </FieldContent>
+              </Col>
+            </Row>
 
-          <Row>
-            <Col>
-              <FieldContent>
-                <InputCurrency
-                  name="salario"
-                  label="Salário"
-                  placeholder="Informe o salário do funcionário."
-                  value={salary}
-                  onChange={event => {
-                    handleFormattingCurrencyValues(event, 'salary');
-                  }}
-                  onBlur={setDiscountAmount}
-                />
-              </FieldContent>
-            </Col>
+            <Row>
+              <Col>
+                <FieldContent>
+                  <InputCurrency
+                    name="salario"
+                    label="Salário"
+                    placeholder="Informe o salário do funcionário."
+                    value={salary}
+                    onChange={event => {
+                      handleFormattingCurrencyValues(event, 'salary');
+                    }}
+                    onBlur={setDiscountAmount}
+                  />
+                </FieldContent>
+              </Col>
 
-            <Col>
-              <FieldContent>
-                <InputCurrency
-                  name="desconto"
-                  label="Desconto"
-                  placeholder="Informe os descontos do funcionário."
-                  value={discount}
-                  onChange={event => {
-                    handleFormattingCurrencyValues(event, 'discount');
-                  }}
-                  onBlur={handleCalculateSalaryAndDiscountValues}
-                />
-              </FieldContent>
-            </Col>
+              <Col>
+                <FieldContent>
+                  <InputCurrency
+                    name="desconto"
+                    label="Desconto"
+                    placeholder="Informe os descontos do funcionário."
+                    value={discount}
+                    onChange={event => {
+                      handleFormattingCurrencyValues(event, 'discount');
+                    }}
+                    onBlur={handleCalculateSalaryAndDiscountValues}
+                  />
+                </FieldContent>
+              </Col>
 
-            <Col>
-              <FieldContent>
-                <Input
-                  name="dependentes"
-                  type="number"
-                  label="Dependentes"
-                  placeholder="Informe o número de dependentes."
-                  icon={FiUsers}
-                  value={dependents}
-                  onChange={event => {
-                    setDependents(Number(event.target.value));
-                  }}
-                />
-              </FieldContent>
-            </Col>
-          </Row>
+              <Col>
+                <FieldContent>
+                  <Input
+                    name="dependentes"
+                    type="number"
+                    label="Dependentes"
+                    placeholder="Informe o número de dependentes."
+                    icon={FiUsers}
+                    value={dependents}
+                    onChange={event => {
+                      setDependents(Number(event.target.value));
+                    }}
+                  />
+                </FieldContent>
+              </Col>
+            </Row>
 
-          <Row xs={1} md={2}>
-            <Col>
-              <SalaryFieldContent fieldType="salary">
-                <strong>Salário Base IR</strong>
-                <span>{baseSalaryCurrency}</span>
-              </SalaryFieldContent>
-            </Col>
+            <Row xs={1} md={2}>
+              <Col>
+                <SalaryFieldContent fieldType="salary">
+                  <strong>Salário Base IR</strong>
+                  <span>{baseSalaryCurrency}</span>
+                </SalaryFieldContent>
+              </Col>
 
-            <Col>
-              <SalaryFieldContent fieldType="discount">
-                <strong>Desconto IRRF</strong>
-                <span>{discountIRRFCurrency}</span>
-              </SalaryFieldContent>
-            </Col>
-          </Row>
+              <Col>
+                <SalaryFieldContent fieldType="discount">
+                  <strong>Desconto IRRF</strong>
+                  <span>{discountIRRFCurrency}</span>
+                </SalaryFieldContent>
+              </Col>
+            </Row>
 
-          <Footer>
-            <Button
-              type="button"
-              buttonStyle="outline"
-              onClick={() => handleSecondaryButton()}
-            >
-              {secondaryButton}
-            </Button>
-            <Button type="submit">Salvar</Button>
-          </Footer>
-        </Form>
-      </Content>
-    </BoxContent>
+            <Footer>
+              <Button
+                type="button"
+                buttonStyle="outline"
+                onClick={() => handleSecondaryButton()}
+              >
+                {secondaryButton}
+              </Button>
+              <Button type="submit">Salvar</Button>
+            </Footer>
+          </Form>
+        </Content>
+      </BoxContent>
+    </>
   );
 };
 
