@@ -39,6 +39,6 @@ describe('useINSS hook', () => {
 
     const value = result.current.aliquotINSS(7000);
 
-    expect(value).toBe(0);
+    expect(value).toBe(854.15);
   });
 });
