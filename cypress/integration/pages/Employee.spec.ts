@@ -28,6 +28,8 @@ describe('Pages | Employee Page', () => {
   it('should be update an employee', () => {
     const employeeName = name.findName();
 
+    cy.registerAnEmployee();
+
     cy.get('[data-cy="table"]').within(() => {
       cy.get('tbody').within(() => {
         cy.get('tr').first().click();
@@ -40,16 +42,12 @@ describe('Pages | Employee Page', () => {
 
     cy.contains('Salvar').click();
 
-    cy.wait(2000);
-
-    cy.window().focus();
-
-    cy.wait(2000);
-
     cy.contains(employeeName).should('be.visible');
   });
 
   it('should be delete an employee', () => {
+    cy.registerAnEmployee();
+
     cy.get('[data-cy="table"]').within(() => {
       cy.get('tbody').within(() => {
         cy.get('tr').first().click();
@@ -71,17 +69,13 @@ describe('Pages | Employee Page', () => {
 
         cy.get('.swal2-confirm').click();
 
-        cy.wait(2000);
-
-        cy.window().focus();
-
-        cy.wait(2000);
-
         cy.contains(employeeName).should('not.be.visible');
       });
   });
 
   it('should be cancel an delete employee', () => {
+    cy.registerAnEmployee();
+
     cy.get('[data-cy="table"]').within(() => {
       cy.get('tbody').within(() => {
         cy.get('tr').first().click();

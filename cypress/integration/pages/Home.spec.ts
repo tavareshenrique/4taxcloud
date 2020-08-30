@@ -10,6 +10,8 @@ describe('Pages | Home Page', () => {
   });
 
   it('should be visited the updated employee page', () => {
+    cy.registerAnEmployee();
+
     cy.get('[data-cy="table"]').within(() => {
       cy.get('tbody').within(() => {
         cy.get('tr').first().click();
